@@ -2,11 +2,14 @@ package edu.upc.dsa.restclient;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -20,12 +23,21 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewResult;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
 
+    private RecyclerView recyclerView;
+    private MyAdapter myAdapter;
+    private List<String> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textViewResult = findViewById(R.id.text_view_result);
+        //textViewResult = findViewById(R.id.text_view_result);
+        recyclerView = findViewById(R.id.my_recycler_view);
+
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Gson gson = new GsonBuilder().serializeNulls().create();
 
@@ -36,11 +48,19 @@ public class MainActivity extends AppCompatActivity {
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
+        list = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            list.add("Lorem ipsum dolor sit amet");
+        }
+
+        myAdapter = new MyAdapter(this, list);
+        recyclerView.setAdapter(myAdapter);
+
         //getPosts();
         //getComments();
         //createPost();
         //updatePost();
-        deletePost();
+        //deletePost();
     }
 
     private void getPosts() {
@@ -56,13 +76,18 @@ public class MainActivity extends AppCompatActivity {
 
                 List<Post> posts = response.body();
 
+                list = new ArrayList<>();
                 for (Post post : posts) {
                     String content = "";
                     content += "ID: " + post.getId() + "\n";
                     content += "Title: " + post.getTitle() + "\n\n";
 
-                    textViewResult.append(content);
+                    //textViewResult.append(content);
+                    list.add(content);
                 }
+
+                //myAdapter = new MyAdapter(this, list);
+                //recyclerView.setAdapter(mAdapter);
             }
 
             @Override
