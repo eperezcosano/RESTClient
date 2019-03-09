@@ -2,7 +2,6 @@ package edu.upc.dsa.restclient;
 
 import java.util.List;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,11 +11,9 @@ import android.widget.TextView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-    private Context context;
     private List<String> list;
 
-    public MyAdapter(Context context, List<String> list) {
-        this.context = context;
+    public MyAdapter(List<String> list) {
         this.list = list;
     }
 

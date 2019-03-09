@@ -7,10 +7,8 @@
     
     <TextView
         android:id="@+id/textViewRow"
-        android:text="Sample Row"
         android:textColor="#000"
         android:textSize="18sp"
-        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>
