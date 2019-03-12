@@ -1,5 +1,7 @@
 package edu.upc.dsa.restclient;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -43,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.mn_get:
                 getPosts();
                 return true;
+            case R.id.mn_post:
+                popUpInput();
+                return true;
+            case R.id.mn_edit:
+                popUpEdit();
+                return true;
+            case R.id.mn_delete:
+                popUpDelete();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -74,6 +85,93 @@ public class MainActivity extends AppCompatActivity {
         //deletePost(8);
 
 
+    }
+
+
+    private void popUpEdit() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Edit post");
+        alert.setMessage("ID");
+
+        final EditText idInput = new EditText(this);
+        alert.setView(idInput);
+
+
+        alert.setMessage("Title");
+
+        final EditText titleInput = new EditText(this);
+        alert.setView(titleInput);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                int id = Integer.parseInt(idInput.getText().toString());
+                String title = titleInput.getText().toString();
+                Post post = new Post(title);
+                updatePost(id, post);
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
+    }
+
+    private void popUpDelete() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Delete post");
+        alert.setMessage("ID");
+
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                deletePost(Integer.parseInt(input.getText().toString()));
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
+    }
+
+    private void popUpInput() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Add new post");
+        alert.setMessage("Title");
+
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                String title = input.getText().toString();
+                Post post = new Post(title);
+                createPost(post);
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
     }
 
     private void getPosts() {
