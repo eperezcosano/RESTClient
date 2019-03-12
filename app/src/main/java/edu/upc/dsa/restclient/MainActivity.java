@@ -4,11 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -23,19 +24,19 @@ import retrofit2.internal.EverythingIsNonNull;
 public class MainActivity extends AppCompatActivity {
 
     private TrackAPI trackAPI;
-
-    private RecyclerView recyclerView;
-    private List<String> list;
+    private MyAdapter recyclerAdapter;
+    private List<Track> trackList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        list = new ArrayList<>();
-        recyclerView = findViewById(R.id.myRecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.myRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerAdapter = new MyAdapter(getApplicationContext(), trackList);
+        recyclerView.setAdapter(recyclerAdapter);
 
         Gson gson = new GsonBuilder().create();
 
@@ -46,42 +47,16 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://147.83.7.203:8080/dsaApp/")
+                //.baseUrl("http://147.83.7.203:8080/dsaApp/")
+                .baseUrl("https://my-json-server.typicode.com/eperezcosano/JSON-server/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
 
         trackAPI = retrofit.create(TrackAPI.class);
 
-    }
+        getTracks();
 
-    private void createTrack(String title, String singer) {
-        Call<Track> call = trackAPI.createTrack(new Track(title, singer));
-
-        call.enqueue(new Callback<Track>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<Track> call, Response<Track> response) {
-                if (!response.isSuccessful()) {
-                    list.add(("Code: ").concat(Integer.toString(response.code())));
-                } else {
-                    Track track = response.body();
-                    String content = "";
-                    content += "Code: " + response.code() + "\n";
-                    content += "ID: " + track.getId() + "\n";
-                    content += "Title: " + track.getTitle()  + "\n";;
-                    content += "Singer: " + track.getSinger() + "\n\n";;
-                    list.add(content);
-                }
-                recyclerView.setAdapter(new MyAdapter(list));
-            }
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<Track> call, Throwable t) {
-                list.add(t.getMessage());
-                recyclerView.setAdapter(new MyAdapter(list));
-            }
-        });
     }
 
     private void getTracks() {
@@ -92,85 +67,102 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
                 if (!response.isSuccessful()) {
-                    list.add(("Code: ").concat(Integer.toString(response.code())));
-                } else {
-                    List<Track> tracks = response.body();
-                    for (Track track : tracks) {
-                        String content = "";
-                        content += "ID: " + track.getId() + "\n";
-                        content += "Title: " + track.getTitle()  + "\n";;
-                        content += "Singer: " + track.getSinger() + "\n\n";;
-                        list.add(content);
-                    }
+                    Log.e("Code", Integer.toString(response.code()));
+                    return;
                 }
-                recyclerView.setAdapter(new MyAdapter(list));
+
+                trackList = response.body();
+                recyclerAdapter.setTrackList(trackList);
             }
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<List<Track>> call, Throwable t) {
-                list.add(t.getMessage());
-                recyclerView.setAdapter(new MyAdapter(list));
+                Log.e("Throwable", t.getMessage());
             }
         });
     }
 
-/*
+    private void createTrack(String title, String singer) {
+        Call<Track> call = trackAPI.createTrack(new Track(title, singer));
 
-
-    private void updatePost(int postId, Post post) {
-
-        Call<Post> call = jsonPlaceHolderApi.putPost(postId, post);
-
-        call.enqueue(new Callback<Post>() {
+        call.enqueue(new Callback<Track>() {
             @EverythingIsNonNull
             @Override
-            public void onResponse(Call<Post> call, Response<Post> response) {
-
+            public void onResponse(Call<Track> call, Response<Track> response) {
                 if (!response.isSuccessful()) {
-                    list.add(("Code: ").concat(Integer.toString(response.code())));
-                } else {
-                    Post postResponse = response.body();
-                    String content = "";
-
-                    content += "Code: " + response.code() + "\n";
-                    content += "ID: " + postResponse.getId() + "\n";
-                    content += "Title: " + postResponse.getTitle() + "\n\n";
-
-                    list.add(content);
+                    Log.e("Code", Integer.toString(response.code()));
+                    return;
                 }
-
-                myAdapter = new MyAdapter(list);
-                recyclerView.setAdapter(myAdapter);
+                Toast.makeText(MainActivity.this, "Track created successfully", Toast.LENGTH_SHORT).show();
             }
             @EverythingIsNonNull
             @Override
-            public void onFailure(Call<Post> call, Throwable t) {
-                list.add(t.getMessage());
-                myAdapter = new MyAdapter(list);
-                recyclerView.setAdapter(myAdapter);
+            public void onFailure(Call<Track> call, Throwable t) {
+                Log.e("Throwable", t.getMessage());
             }
         });
     }
 
-    private void deletePost(int postId) {
+    private void updateTrack(Track track) {
+        Call<Track> call = trackAPI.updateTrack(track);
 
-        Call<Void> call = jsonPlaceHolderApi.deletePost(postId);
+        call.enqueue(new Callback<Track>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                if (!response.isSuccessful()) {
+                    Log.e("Code", Integer.toString(response.code()));
+                    return;
+                }
+                Toast.makeText(MainActivity.this, "Track updated successfully", Toast.LENGTH_SHORT).show();
+            }
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Log.e("Throwable", t.getMessage());
+            }
+        });
+    }
+
+    private void getTrack(String id) {
+        Call<Track> call = trackAPI.getTrack(id);
+
+        call.enqueue(new Callback<Track>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                if (!response.isSuccessful()) {
+                    Log.e("Code", Integer.toString(response.code()));
+                    return;
+                }
+                //TODO: Set on new layaout
+            }
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Log.e("Throwable", t.getMessage());
+            }
+        });
+    }
+
+    private void deleteTrack(String id) {
+        Call<Void> call = trackAPI.deleteTrack(id);
 
         call.enqueue(new Callback<Void>() {
             @EverythingIsNonNull
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                list.add(("Code: ").concat(Integer.toString(response.code())));
-                myAdapter = new MyAdapter(list);
-                recyclerView.setAdapter(myAdapter);
+                if (!response.isSuccessful()) {
+                    Log.e("Code", Integer.toString(response.code()));
+                    return;
+                }
+                Toast.makeText(MainActivity.this, "Track deleted successfully", Toast.LENGTH_SHORT).show();
             }
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                list.add(t.getMessage());
-                myAdapter = new MyAdapter(list);
-                recyclerView.setAdapter(myAdapter);
+                Log.e("Throwable", t.getMessage());
             }
         });
-    }*/
+    }
 }

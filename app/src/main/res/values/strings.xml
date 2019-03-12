@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">RESTClient</string>
+    <string name="id">ID:\u0020</string>
+    <string name="title">Title:\u0020</string>
+    <string name="singer">Singer:\u0020</string>
 </resources>

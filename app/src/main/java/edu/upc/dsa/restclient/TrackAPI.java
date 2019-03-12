@@ -19,11 +19,11 @@ public interface TrackAPI {
     Call<Track> createTrack(@Body Track track);
 
     @PUT("tracks")
-    Call<Track> editTrack(@Body Track track);
+    Call<Track> updateTrack(@Body Track track);
 
     @GET("tracks/{id}")
-    Call<Track> getTrack(@Path("id") int id);
+    Call<Track> getTrack(@Path("id") String id);
 
     @DELETE("tracks/{id}")
-    Call<Void> deleteTrack(@Path("id") int id);
+    Call<Void> deleteTrack(@Path("id") String id);
 }
