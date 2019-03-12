@@ -1,5 +1,6 @@
 package edu.upc.dsa.restclient;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +36,16 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.myRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAdapter = new MyAdapter(getApplicationContext(), trackList);
+        recyclerAdapter = new MyAdapter(getApplicationContext(), trackList, new MyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Track track) {
+                Intent myIntent = new Intent(getApplicationContext(), SecondActivity.class);
+                myIntent.putExtra("trackId", track.getId());
+                myIntent.putExtra("trackTitle", track.getTitle());
+                myIntent.putExtra("trackSinger", track.getSinger());
+                startActivityForResult(myIntent, 0);
+            }
+        });
         recyclerView.setAdapter(recyclerAdapter);
 
         Gson gson = new GsonBuilder().create();

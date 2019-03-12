@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,18 @@ import android.widget.TextView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-    Context context;
-    private List<Track> trackList;
+    public interface OnItemClickListener {
+        void onItemClick(Track track);
+    }
 
-    public MyAdapter(Context context, List<Track> trackList) {
+    private Context context;
+    private List<Track> trackList;
+    private OnItemClickListener listener;
+
+    public MyAdapter(Context context, List<Track> trackList, OnItemClickListener listener) {
         this.context = context;
         this.trackList = trackList;
+        this.listener = listener;
     }
 
     public void setTrackList(List<Track> trackList) {
@@ -34,10 +39,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
         myViewHolder.id.setText(trackList.get(i).getId());
         myViewHolder.title.setText(trackList.get(i).getTitle());
         myViewHolder.singer.setText(trackList.get(i).getSinger());
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(trackList.get(i));
+            }
+        });
     }
 
     @Override
