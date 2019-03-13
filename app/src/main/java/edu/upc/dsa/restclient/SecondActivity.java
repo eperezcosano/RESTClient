@@ -67,6 +67,13 @@ public class SecondActivity extends AppCompatActivity {
                 deleteTrack(trackId);
             }
         });
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void getTrack(String id) {
