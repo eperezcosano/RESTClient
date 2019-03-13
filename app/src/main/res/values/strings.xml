@@ -8,4 +8,7 @@
     <string name="titlesample">titleSample</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="apply">Apply</string>
+    <string name="song_title">Song title</string>
+    <string name="singer_song">Singer song</string>
 </resources>
