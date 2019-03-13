@@ -131,27 +131,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getTrack(String id) {
-        Call<Track> call = trackAPI.getTrack(id);
-
-        call.enqueue(new Callback<Track>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<Track> call, Response<Track> response) {
-                if (!response.isSuccessful()) {
-                    Log.e("Code", Integer.toString(response.code()));
-                    return;
-                }
-                //TODO: Set on new layaout
-            }
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<Track> call, Throwable t) {
-                Log.e("Throwable", t.getMessage());
-            }
-        });
-    }
-
     private void deleteTrack(String id) {
         Call<Void> call = trackAPI.deleteTrack(id);
 
