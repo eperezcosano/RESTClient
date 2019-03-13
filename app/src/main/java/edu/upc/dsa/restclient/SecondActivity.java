@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,9 +31,13 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.track_info);
 
+        //Buttons
+        Button btnEdit = findViewById(R.id.btnEdit);
+        Button btnDelete = findViewById(R.id.btnDelete);
+
         //Get track id from MainActivity
         Intent intent = getIntent();
-        String trackId = intent.getStringExtra("trackId");
+        final String trackId = intent.getStringExtra("trackId");
 
         //?
         //Retrofit server connection
@@ -53,6 +60,13 @@ public class SecondActivity extends AppCompatActivity {
 
         //Get track info by its id
         getTrack(trackId);
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteTrack(trackId);
+            }
+        });
     }
 
     private void getTrack(String id) {
@@ -83,6 +97,29 @@ public class SecondActivity extends AppCompatActivity {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<Track> call, Throwable t) {
+                Log.e("Throwable", t.getMessage());
+            }
+        });
+    }
+
+    private void deleteTrack(String id) {
+        Call<Void> call = trackAPI.deleteTrack(id);
+
+        call.enqueue(new Callback<Void>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Log.e("Code", Integer.toString(response.code()));
+                    return;
+                }
+                Toast.makeText(SecondActivity.this, "Track deleted successfully", Toast.LENGTH_SHORT).show();
+                setResult(1);
+                finish();
+            }
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 Log.e("Throwable", t.getMessage());
             }
         });

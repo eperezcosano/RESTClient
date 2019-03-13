@@ -1,6 +1,7 @@
 package edu.upc.dsa.restclient;
 
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private TrackAPI trackAPI;
     private MyAdapter recyclerAdapter;
     private List<Track> trackList;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getTracks();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getTracks() {
+    public void getTracks() {
         Call<List<Track>> call = trackAPI.getTracks();
 
         call.enqueue(new Callback<List<Track>>() {
@@ -126,27 +132,6 @@ public class MainActivity extends AppCompatActivity {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<Track> call, Throwable t) {
-                Log.e("Throwable", t.getMessage());
-            }
-        });
-    }
-
-    private void deleteTrack(String id) {
-        Call<Void> call = trackAPI.deleteTrack(id);
-
-        call.enqueue(new Callback<Void>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (!response.isSuccessful()) {
-                    Log.e("Code", Integer.toString(response.code()));
-                    return;
-                }
-                Toast.makeText(MainActivity.this, "Track deleted successfully", Toast.LENGTH_SHORT).show();
-            }
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
                 Log.e("Throwable", t.getMessage());
             }
         });
