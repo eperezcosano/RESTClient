@@ -1,9 +1,9 @@
 package edu.upc.dsa.restclient;
 
 public class Track {
-    String id;
-    String title;
-    String singer;
+    private String id;
+    private String title;
+    private String singer;
 
     public Track(String title, String singer) {
         this.title = title;

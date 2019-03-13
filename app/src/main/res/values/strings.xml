@@ -3,4 +3,9 @@
     <string name="id">ID:\u0020</string>
     <string name="title">Title:\u0020</string>
     <string name="singer">Singer:\u0020</string>
+    <string name="singersample">singerSample</string>
+    <string name="idsample">idSample</string>
+    <string name="titlesample">titleSample</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>

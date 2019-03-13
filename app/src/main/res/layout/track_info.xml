@@ -7,46 +7,99 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewId"
+        android:id="@+id/textViewDisplaySinger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/singersample"
+        android:textColor="#000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewSinger"
+        app:layout_constraintStart_toEndOf="@+id/textViewSinger"
+        app:layout_constraintTop_toTopOf="@+id/textViewSinger" />
+
+    <TextView
+        android:id="@+id/textViewSinger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="ID"
-        app:layout_constraintStart_toStartOf="@+id/inputId"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/singer"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Title"
-        app:layout_constraintStart_toStartOf="@+id/inputTitle"
-        app:layout_constraintTop_toBottomOf="@+id/inputId" />
+        android:layout_marginBottom="8dp"
+        android:text="@string/title"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSinger"
+        app:layout_constraintEnd_toEndOf="@+id/textViewSinger" />
 
-    <EditText
-        android:id="@+id/inputTitle"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textViewID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/id"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textViewTitle" />
+
+    <TextView
+        android:id="@+id/textViewDisplayId"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+        android:text="@string/idsample"
+        android:textColor="#000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewID"
+        app:layout_constraintStart_toEndOf="@+id/textViewSinger"
+        app:layout_constraintTop_toTopOf="@+id/textViewID" />
 
-    <EditText
-        android:id="@+id/inputId"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textViewDisplayTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:text="@string/titlesample"
+        android:textColor="#000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"
+        app:layout_constraintStart_toEndOf="@+id/textViewSinger"
+        app:layout_constraintTop_toTopOf="@+id/textViewTitle" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="numberSigned"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewId" />
+        android:layout_marginBottom="8dp"
+        android:text="@string/delete"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewSinger"
+        app:layout_constraintStart_toStartOf="@+id/textViewSinger"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSinger" />
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text="@string/edit"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDelete"
+        app:layout_constraintStart_toEndOf="@+id/btnDelete"
+        app:layout_constraintTop_toTopOf="@+id/btnDelete"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>

@@ -16,8 +16,7 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.track_info);
 
         Intent intent = getIntent();
-        track = new Track(intent.getStringExtra("trackTitle"), intent.getStringExtra("trackSinger"));
-        track.setId(intent.getStringExtra("trackId"));
+        intent.getStringExtra("trackId");
 
         TextView textViewId = findViewById(R.id.textViewId);
         textViewId.setText(track.getId());

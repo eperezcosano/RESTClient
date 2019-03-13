@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(Track track) {
                 Intent myIntent = new Intent(getApplicationContext(), SecondActivity.class);
                 myIntent.putExtra("trackId", track.getId());
-                myIntent.putExtra("trackTitle", track.getTitle());
-                myIntent.putExtra("trackSinger", track.getSinger());
                 startActivityForResult(myIntent, 0);
             }
         });
@@ -57,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl("http://147.83.7.203:8080/dsaApp/")
-                .baseUrl("https://my-json-server.typicode.com/eperezcosano/JSON-server/")
+                .baseUrl("http://147.83.7.203:8080/dsaApp/")
+                //.baseUrl("https://my-json-server.typicode.com/eperezcosano/JSON-server/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
@@ -73,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         Call<List<Track>> call = trackAPI.getTracks();
 
         call.enqueue(new Callback<List<Track>>() {
-            @EverythingIsNonNull
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
                 if (!response.isSuccessful()) {
@@ -134,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getTrack(String id) {
+    public void getTrack(String id) {
         Call<Track> call = trackAPI.getTrack(id);
 
         call.enqueue(new Callback<Track>() {

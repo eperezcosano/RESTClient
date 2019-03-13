@@ -40,9 +40,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
-        myViewHolder.id.setText(trackList.get(i).getId());
-        myViewHolder.title.setText(trackList.get(i).getTitle());
-        myViewHolder.singer.setText(trackList.get(i).getSinger());
+        if (trackList.get(i).getId() != null)
+            myViewHolder.id.setText(trackList.get(i).getId());
+        else
+            myViewHolder.id.setText("Not defined");
+        if (trackList.get(i).getTitle() != null)
+            myViewHolder.title.setText(trackList.get(i).getTitle());
+        else
+            myViewHolder.title.setText("Not defined");
+        if (trackList.get(i).getSinger() != null)
+            myViewHolder.singer.setText(trackList.get(i).getSinger());
+        else
+            myViewHolder.singer.setText("Not defined");
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
