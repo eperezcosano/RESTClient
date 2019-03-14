@@ -106,26 +106,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    private void updateTrack(Track track) {
-        Call<Track> call = trackAPI.updateTrack(track);
-
-        call.enqueue(new Callback<Track>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<Track> call, Response<Track> response) {
-                if (!response.isSuccessful()) {
-                    Log.e("Code", Integer.toString(response.code()));
-                    return;
-                }
-                Toast.makeText(MainActivity.this, "Track updated successfully", Toast.LENGTH_SHORT).show();
-            }
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<Track> call, Throwable t) {
-                Log.e("Throwable", t.getMessage());
-            }
-        });
-    }
 }

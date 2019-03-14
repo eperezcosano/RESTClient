@@ -1,5 +1,6 @@
 package edu.upc.dsa.restclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,6 +24,9 @@ import retrofit2.internal.EverythingIsNonNull;
 public class InputActivity extends AppCompatActivity {
 
     private TrackAPI trackAPI;
+    private Track track;
+    private TextView inputTitle;
+    private TextView inputSinger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +34,12 @@ public class InputActivity extends AppCompatActivity {
         setContentView(R.layout.track_input);
 
         Button btnApply = findViewById(R.id.btnApply);
-        final TextView inputTitle = findViewById(R.id.inputTitle);
-        final TextView inputSinger = findViewById(R.id.inputSinger);
+        inputTitle = findViewById(R.id.inputTitle);
+        inputSinger = findViewById(R.id.inputSinger);
+
+        //Get track id from MainActivity
+        Intent intent = getIntent();
+        final String trackId = intent.getStringExtra("trackId");
 
         //?
         //Retrofit server connection
@@ -52,10 +60,49 @@ public class InputActivity extends AppCompatActivity {
 
         trackAPI = retrofit.create(TrackAPI.class);
 
+        if (trackId != null) {
+            //Get track info by its id
+            getTrack(trackId);
+        }
+
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createTrack(inputTitle.getText().toString(), inputSinger.getText().toString());
+                if (trackId == null)
+                    createTrack(inputTitle.getText().toString(), inputSinger.getText().toString());
+                else {
+                    track.setId(trackId);
+                    track.setTitle(inputTitle.getText().toString());
+                    track.setSinger(inputSinger.getText().toString());
+                    updateTrack(track);
+                }
+            }
+        });
+    }
+
+    private void getTrack(String id) {
+
+        Call<Track> call = trackAPI.getTrack(id);
+
+        call.enqueue(new Callback<Track>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+
+                if (!response.isSuccessful()) {
+                    Log.e("Code", Integer.toString(response.code()));
+                    return;
+                }
+
+                track = response.body();
+                //Display info
+                inputTitle.setText(track.getTitle());
+                inputSinger.setText(track.getSinger());
+            }
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Log.e("Throwable", t.getMessage());
             }
         });
     }
@@ -79,6 +126,29 @@ public class InputActivity extends AppCompatActivity {
             @EverythingIsNonNull
             @Override
             public void onFailure(Call<Track> call, Throwable t) {
+                Log.e("Throwable", t.getMessage());
+            }
+        });
+    }
+
+    private void updateTrack(Track track) {
+        Call<Void> call = trackAPI.updateTrack(track);
+
+        call.enqueue(new Callback<Void>() {
+            @EverythingIsNonNull
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Log.e("Code", Integer.toString(response.code()));
+                    return;
+                }
+                Toast.makeText(InputActivity.this, "Track updated successfully", Toast.LENGTH_SHORT).show();
+                setResult(1);
+                finish();
+            }
+            @EverythingIsNonNull
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 Log.e("Throwable", t.getMessage());
             }
         });

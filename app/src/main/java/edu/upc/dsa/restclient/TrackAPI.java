@@ -19,7 +19,7 @@ public interface TrackAPI {
     Call<Track> createTrack(@Body Track track);
 
     @PUT("tracks")
-    Call<Track> updateTrack(@Body Track track);
+    Call<Void> updateTrack(@Body Track track);
 
     @GET("tracks/{id}")
     Call<Track> getTrack(@Path("id") String id);

@@ -27,6 +27,11 @@ public class SecondActivity extends AppCompatActivity {
     private Track track;
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getTrack(track.getId());
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.track_info);
@@ -71,7 +76,9 @@ public class SecondActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getApplicationContext(), InputActivity.class);
+                intent.putExtra("trackId", track.getId());
+                startActivityForResult(intent, 0);
             }
         });
     }
