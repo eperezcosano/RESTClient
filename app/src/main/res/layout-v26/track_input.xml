@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#34495e">
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/title"
+        android:textColor="#bdc3c7"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/inputTitle"
         app:layout_constraintStart_toStartOf="@+id/inputTitle" />
@@ -25,6 +26,7 @@
         android:ems="10"
         android:hint="@string/song_title"
         android:inputType="textPersonName"
+        android:textColor="#ecf0f1"
         app:layout_constraintBottom_toTopOf="@+id/textViewSinger"
         app:layout_constraintStart_toStartOf="@+id/textViewSinger" />
 
@@ -34,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/singer"
+        android:textColor="#bdc3c7"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/inputSinger"
         app:layout_constraintStart_toStartOf="@+id/inputSinger" />
@@ -50,6 +53,7 @@
         android:ems="10"
         android:hint="@string/singer_song"
         android:inputType="textPersonName"
+        android:textColor="#ecf0f1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +66,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="#27ae60"
         android:text="@string/apply"
+        android:textColor="#ecf0f1"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
