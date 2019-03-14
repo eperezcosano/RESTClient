@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -44,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Hola", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), InputActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -104,26 +107,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void createTrack(String title, String singer) {
-        Call<Track> call = trackAPI.createTrack(new Track(title, singer));
-
-        call.enqueue(new Callback<Track>() {
-            @EverythingIsNonNull
-            @Override
-            public void onResponse(Call<Track> call, Response<Track> response) {
-                if (!response.isSuccessful()) {
-                    Log.e("Code", Integer.toString(response.code()));
-                    return;
-                }
-                Toast.makeText(MainActivity.this, "Track created successfully", Toast.LENGTH_SHORT).show();
-            }
-            @EverythingIsNonNull
-            @Override
-            public void onFailure(Call<Track> call, Throwable t) {
-                Log.e("Throwable", t.getMessage());
-            }
-        });
-    }
 
     private void updateTrack(Track track) {
         Call<Track> call = trackAPI.updateTrack(track);
